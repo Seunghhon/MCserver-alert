@@ -1,5 +1,5 @@
 import requests #dependency
-import discord 
+from discord_webhook import DiscordWebhook
 
 url = "https://discord.com/api/webhooks/1164075899369566250/-nWpkw79OA5NFeNyIB2wtxwY464mdFdxILLdLn640l9xM-rEiRl83fvT2UQkblBiPrJD" #webhook url, from here: https://i.imgur.com/f9XnAew.png
 
