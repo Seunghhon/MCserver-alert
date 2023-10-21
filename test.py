@@ -1,16 +1,20 @@
 import requests #dependency
 from discord_webhook import DiscordWebhook
+from dotenv import load_dotenv
+import os
 
-url = "https://discord.com/api/webhooks/1164075899369566250/-nWpkw79OA5NFeNyIB2wtxwY464mdFdxILLdLn640l9xM-rEiRl83fvT2UQkblBiPrJD" #webhook url, from here: https://i.imgur.com/f9XnAew.png
+load_dotenv()
 
-#for all params, see https://discordapp.com/developers/docs/resources/webhook#execute-webhook
+webhook_url = os.getenv('WEBHOOK')
+log_path = os.getenv('LOGPATH')
+
+url = webhook_url
+
 data = {
     "content" : "서버 상태 알림!",
     "username" : "노예봇",
 }
 
-#leave this out if you dont want an embed
-#for all params, see https://discordapp.com/developers/docs/resources/channel#embed-object
 def send_webhook_message(description, title):
     data["embeds"] = [
         {
