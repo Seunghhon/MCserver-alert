@@ -13,10 +13,10 @@ LOGPATH="Enter your latest.log file path here"
    * ```pip install -r requirements.txt```
    
 	* For manual installation:
-        ```
-        pip install discord-webhook 
-        pip install python-dotenv
-        ```
+        
+        * `pip install discord-webhook` 
+        * `pip install python-dotenv`
+        
  
 
 5. Run the `alert.py`
