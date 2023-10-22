@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os
 import time
 from pathlib import Path
+import datetime
 
 load_dotenv()
 
@@ -16,7 +17,8 @@ if not log_path.exists():
 last_position = 0
 def send_webhook_message(description, title):
     webhook = DiscordWebhook(url=webhook_url)
-    embed = DiscordEmbed(title=title, description=description, color='03b2f8')
+    embed = DiscordEmbed(title="", description=description, color='242424')
+    embed.set_timestamp()
     webhook.add_embed(embed)
     webhook.execute()
 
@@ -51,4 +53,4 @@ def check_minecraft_server(description, title):
             # Wait for a few seconds before checking the log file again
             time.sleep(5)
 
-check_minecraft_server("Minecraft Server Alert", "Minecraft Server Alert")
+check_minecraft_server("", "")
