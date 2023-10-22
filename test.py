@@ -1,47 +1,54 @@
-import requests #dependency
-from discord_webhook import DiscordWebhook
+from discord_webhook import DiscordWebhook, DiscordEmbed
 from dotenv import load_dotenv
 import os
+import time
+from pathlib import Path
 
 load_dotenv()
 
 webhook_url = os.getenv('WEBHOOK')
-log_path = os.getenv('LOGPATH')
+log_path = Path(os.getenv('LOGPATH'))
 
-url = webhook_url
+if not log_path.exists():
+    print("Log file does not exist")
+    exit()
 
-data = {
-    "content" : "서버 상태 알림!",
-    "username" : "노예봇",
-}
-
+last_position = 0
 def send_webhook_message(description, title):
-    data["embeds"] = [
-        {
-            "description" : description,
-            "title" : title,
-            "color" : 123456,
-        }
-    ]
+    webhook = DiscordWebhook(url=webhook_url)
+    embed = DiscordEmbed(title=title, description=description, color='03b2f8')
+    webhook.add_embed(embed)
+    webhook.execute()
 
-result = requests.post(url, json = data)
-#server_api_url = "https://api.mcsrvstat.us/3/mc.seunghoon.me"
-
-def check_minecraft_server():
+def check_minecraft_server(description, title):
+    global last_position
     while True:
-        with open("server log file path") as f:
+        # Open the log file in read mode and seek to the last known position
+        with open(log_path, 'r') as f:
+            
+            f.seek(last_position)
             console_log = f.read()
-            if "joined the game" in console_log:
-                player = console_log.split("joined the game")[0].split(" ")[-1]
-                description = f'{player} has joined the game!'
-                title = "Minecraft Server Alert"
-                send_webhook_message(description, title)
-        
-        
+            
+            if "Async Chat Thread" not in console_log:
+                
+            # Detect player joins
+                if "joined the game" in console_log:
+                    player = console_log.split("joined the game")[0].split()[-1]
+                    description = f'{player} has joined the game!'
+                    title = "Minecraft Server Alert"
+                    send_webhook_message(description, title)
 
-try:
-    result.raise_for_status()
-except requests.exceptions.HTTPError as err:
-    print(err)
-else:
-    print("Payload delivered successfully, code {}.".format(result.status_code))
+                # Detect player leaves
+                if "left the game" in console_log:
+                    player = console_log.split("left the game")[0].split()[-1]
+                    description = f'{player} has left the game!'
+                    title = "Minecraft Server Alert"
+                    send_webhook_message(description, title)
+
+            # Update the last position in the log file
+            last_position = f.tell()
+
+            # Wait for a few seconds before checking the log file again
+            time.sleep(5)
+
+check_minecraft_server("Minecraft Server Alert", "Minecraft Server Alert")
