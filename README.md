@@ -1,5 +1,5 @@
 # MCserver-alert
-A discord webhook to alert if player joins/leaves your minecraft server by sending a message to your discord channel
+A discord webhook to alert when player joins/leaves your minecraft server by sending a message to your discord channel
 
 ## Usage
 1. Install [python](https://www.python.org/)
