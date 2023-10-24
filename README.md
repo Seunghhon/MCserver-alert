@@ -21,5 +21,5 @@ LOGPATH="Enter your latest.log file path here"
 
 5. Run the `alert.py`
 
-     > **NOTE**: This was tested in `Python 3.9`.
+> **NOTE**: This was tested in `Python 3.9`.
      
