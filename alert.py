@@ -46,7 +46,8 @@ def check_minecraft_server(description, title):
                     player = console_log.split("left the game")[0].split()[-1]
                     description = f'{player} has left the game!'
                     title = "Minecraft Server Alert"
-                    send_webhook_message(description, title, webhook_url)
+                    for url in webhook_url:
+                        send_webhook_message(description, title, url)
 
             # Update the last position in the log file
             last_position = f.tell()
